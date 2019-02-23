@@ -2,10 +2,12 @@
   "name": "total-resource",
   "version": "0.1.0",
   "description": "ORM to connect to an API",
-  "main": "dist/index.js",
+  "main": "lib/index.js",
   "scripts": {
+    "clean": "rimraf lib",
     "test": "babel-node test/index.js",
-    "build": "babel src --out-dir dist"
+    "build": "babel src --out-dir lib",
+    "build:watch": "babel src --watch --out-dir lib"
   },
   "author": "Steve Clarke",
   "license": "MIT",
@@ -15,7 +17,8 @@
     "@babel/node": "^7.2.2",
     "@babel/plugin-proposal-class-properties": "^7.3.3",
     "@babel/preset-env": "^7.3.1",
-    "nodemon": "^1.18.10"
+    "nodemon": "^1.18.10",
+    "rimraf": "^2.6.3"
   },
   "dependencies": {
     "inflection": "^1.12.0"
