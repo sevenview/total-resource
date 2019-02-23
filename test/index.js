@@ -1,3 +1,3 @@
-import TotalModel from '../src'
+import TotalResource from '../src'
 
-TotalModel.Echo.say('HELLO')
+TotalResource.Base.echo('Foo!')

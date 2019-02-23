@@ -1,8 +1,12 @@
 // import axios from 'src/lib/axios-init'
-// import inflection from 'inflection'
+import inflection from 'inflection'
 
 class Base {
   #params
+
+  static echo (text) {
+    console.log(text)
+  }
 
   constructor (params) {
     this.#params = params
