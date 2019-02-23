@@ -4,10 +4,6 @@ import inflection from 'inflection'
 class Base {
   #params
 
-  static echo (text) {
-    console.log(text)
-  }
-
   constructor (params) {
     this.#params = params
   }
@@ -45,7 +41,6 @@ class Base {
   }
 
   static async all () {
-    console.log('FOOFY', this.resourceName)
     let resources = []
     await axios
       .get(`/${this.resourceNamePlural}`)
