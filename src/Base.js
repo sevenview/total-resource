@@ -1,9 +1,8 @@
-// import axios from 'src/lib/axios-init'
 import inflection from 'inflection'
 
 class Base {
   #params
-
+  
   constructor (params) {
     this.#params = params
   }
@@ -30,9 +29,8 @@ class Base {
   }
 
   static async find(id) {
-    console.log('FOOFY', this.resourceName)
     let resource = null
-    await axios
+    await this.axios
       .get(`/${this.resourceNamePlural}/${id}`)
       .then(response => {
         resource = new this(response.data[this.resourceName])
@@ -42,7 +40,7 @@ class Base {
 
   static async all () {
     let resources = []
-    await axios
+    await this.axios
       .get(`/${this.resourceNamePlural}`)
       .then(response => {
         response.data[this.resourceNamePlural].forEach(item => {
