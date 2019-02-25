@@ -43,7 +43,7 @@ class Base {
     await this.axios
       .get(`/${this.resourceNamePlural}`)
       .then(response => {
-        response.data[this.resourceNamePlural].forEach(item => {
+        response.data[this.classNameCamelizedPlural].forEach(item => {
           resources.push(new this(item))
         })
       })
@@ -51,10 +51,19 @@ class Base {
   }
 
   static get resourceName () {
-    return this.className.toLowerCase()
+    return inflection.underscore(this.className)
   }
+
   static get resourceNamePlural () {
     return inflection.pluralize(this.resourceName)
+  }
+  
+  static get classNameCamelizedPlural () {
+    let name = this.className
+    name = inflection.camelize(name, true)
+    name = inflection.pluralize(name)
+    console.log('FF: ', name)
+    return name
   }
 }
 
