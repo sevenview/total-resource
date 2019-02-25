@@ -62,7 +62,6 @@ class Base {
     let name = this.className
     name = inflection.camelize(name, true)
     name = inflection.pluralize(name)
-    console.log('FF: ', name)
     return name
   }
 }
