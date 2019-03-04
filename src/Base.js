@@ -38,10 +38,10 @@ class Base {
     return resource
   }
 
-  static async all () {
+  static async all (queryParams) {
     let resources = []
     await this.axios
-      .get(`/${this.resourceNamePlural}`)
+      .get(`/${this.resourceNamePlural}`, { params: queryParams })
       .then(response => {
         response.data[this.classNameCamelizedPlural].forEach(item => {
           resources.push(new this(item))
