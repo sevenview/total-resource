@@ -33,7 +33,7 @@ class Base {
     await this.axios
       .get(`/${this.resourceNamePlural}/${id}`)
       .then(response => {
-        resource = new this(response.data[this.resourceName])
+        resource = new this(response.data[this.classNameCamelized])
       })
     return resource
   }
@@ -56,6 +56,10 @@ class Base {
 
   static get resourceNamePlural () {
     return inflection.pluralize(this.resourceName)
+  }
+
+  static get classNameCamelized () {
+    return inflection.camelize(this.className, true)
   }
   
   static get classNameCamelizedPlural () {
