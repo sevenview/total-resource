@@ -1,4 +1,5 @@
 import inflection from 'inflection'
+import TotalResourceError from './TotalResourceError'
 
 class Base {
   #params
@@ -30,23 +31,28 @@ class Base {
 
   static async find(id) {
     let resource = null
-    await this.axios
-      .get(`/${this.resourceNamePlural}/${id}`)
-      .then(response => {
-        resource = new this(response.data[this.classNameCamelized])
-      })
+    try {
+      let response = await this.axios.get(`/${this.resourceNamePlural}/${id}`)
+      resource = new this(response.data[this.classNameCamelized])
+    } catch (error) {
+      throw new TotalResourceError(error.message, 'total_resource_error')      
+    }
     return resource
   }
 
   static async all (queryParams) {
     let resources = []
-    await this.axios
-      .get(`/${this.resourceNamePlural}`, { params: queryParams })
-      .then(response => {
-        response.data[this.classNameCamelizedPlural].forEach(item => {
-          resources.push(new this(item))
-        })
+    try {
+      let response = await this.axios.get(
+        `/${this.resourceNamePlural}`,
+        { params: queryParams }
+      )
+      response.data[this.classNameCamelizedPlural].forEach(item => {
+        resources.push(new this(item))
       })
+    } catch (error) {
+      throw new TotalResourceError(error.message, 'total_resource_error')
+    }
     return resources
   }
 
