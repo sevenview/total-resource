@@ -1,6 +1,6 @@
 {
   "name": "total-resource",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "ORM to connect to an API",
   "main": "lib/index.js",
   "scripts": {

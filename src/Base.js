@@ -56,6 +56,25 @@ class Base {
     return resources
   }
 
+  static async requestPaginated (pagination, filter) {
+    let orderSymbol
+    if (pagination.descending) {
+      orderSymbol = 'desc'
+    } else {
+      orderSymbol = 'asc'
+    }
+
+    return this.axios.get(`/${this.resourceNamePlural}`, {
+      params: {
+        page: pagination.page,
+        page_size: pagination.rowsPerPage,
+        sort_by: pagination.sortBy,
+        sort_order: orderSymbol,
+        filter: filter
+      }
+    })
+  }
+
   static get resourceName () {
     return inflection.underscore(this.className)
   }
