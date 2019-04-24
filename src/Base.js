@@ -56,7 +56,7 @@ class Base {
     return resources
   }
 
-  static async requestPaginated (pagination, filter) {
+  static async requestPaginated (pagination, filter, options) {
     let orderSymbol
     if (pagination.descending) {
       orderSymbol = 'desc'
@@ -64,7 +64,13 @@ class Base {
       orderSymbol = 'asc'
     }
 
-    return this.axios.get(`/${this.resourceNamePlural}`, {
+    let url
+    if (options.customUrl) {
+      url = options.customUrl
+    } else {
+      url = `${this.resourceNamePlural}`
+    }
+    return this.axios.get(url, {
       params: {
         page: pagination.page,
         page_size: pagination.rowsPerPage,
