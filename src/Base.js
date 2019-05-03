@@ -81,6 +81,14 @@ class Base {
     })
   }
 
+  static async delete (id) {
+    try {
+      await this.axios.delete(`${this.resourceNamePlural}/${id}`)
+    } catch (error) {
+      throw new TotalResourceError(error.message, 'total_resource_error')
+    }
+  }
+
   static get resourceName () {
     return inflection.underscore(this.className)
   }
