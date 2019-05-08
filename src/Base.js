@@ -89,6 +89,22 @@ class Base {
     }
   }
 
+  static async create (params) {
+    try {
+      await this.axios.post(`/${this.resourceNamePlural}`, params)
+    } catch (error) {
+      throw new TotalResourceError(error.message, 'total_resource_error')
+    }
+  }
+
+  static async update (id, params) {
+    try {
+      await this.axios.put(`/${this.resourceNamePlural}/${id}`, params)
+    } catch (error) {
+      throw new TotalResourceError(error.message, 'total_resource_error')
+    }
+  }
+
   static get resourceName () {
     return inflection.underscore(this.className)
   }
