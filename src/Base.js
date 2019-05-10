@@ -40,16 +40,28 @@ class Base {
     return resource
   }
 
-  static async all (queryParams) {
+  static async all (queryParams, options) {
     let resources = []
     try {
+      let uri
+      if (options.customUrl) {
+        console.log('WOO')
+        uri = options.customUrl
+      } else {
+        uri = this.resourceNamePlural
+      }
+
       let response = await this.axios.get(
-        `/${this.resourceNamePlural}`,
+        `${uri}`,
         { params: queryParams }
       )
-      response.data[this.classNameCamelizedPlural].forEach(item => {
-        resources.push(new this(item))
-      })
+      if (options.customUrl) {
+        return response.data
+      } else {
+        response.data[this.classNameCamelizedPlural].forEach(item => {
+          resources.push(new this(item))
+        })
+      }
     } catch (error) {
       throw new TotalResourceError(error.message, 'total_resource_error')
     }
