@@ -45,7 +45,6 @@ class Base {
     try {
       let uri
       if (options.customUrl) {
-        console.log('WOO')
         uri = options.customUrl
       } else {
         uri = this.resourceNamePlural
