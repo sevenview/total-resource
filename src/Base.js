@@ -41,7 +41,7 @@ class Base {
   }
 
   static async all (queryParams, options) {
-    let resources = []
+    let resources
     try {
       let uri
       if (options.customUrl) {
@@ -54,13 +54,20 @@ class Base {
         `${uri}`,
         { params: queryParams }
       )
+      /*
       if (options.customUrl) {
         return response.data
-      } else {
-        response.data[this.classNameCamelizedPlural].forEach(item => {
+      } else { */
+      let x = response.data[this.classNameCamelizedPlural]
+      if (Array.isArray(x)) {
+        resources = []
+        x.forEach(item => {
           resources.push(new this(item))
         })
+      } else {
+        resources = x
       }
+      /*} */
     } catch (error) {
       throw new TotalResourceError(error.message, 'total_resource_error')
     }
