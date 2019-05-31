@@ -74,7 +74,7 @@ class Base {
     return resources
   }
 
-  static async requestPaginated (pagination, filter, options) {
+  static async requestPaginated (pagination, filter, options = {}) {
     let orderSymbol
     if (pagination.descending) {
       orderSymbol = 'desc'
