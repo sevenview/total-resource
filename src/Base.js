@@ -40,7 +40,7 @@ class Base {
     return resource
   }
 
-  static async all (queryParams, options) {
+  static async all (queryParams, options = {}) {
     let resources
     try {
       let uri
