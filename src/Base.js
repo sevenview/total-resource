@@ -42,6 +42,7 @@ class Base {
 
   static async all (queryParams, options = {}) {
     let url = options.customUrl ? options.customUrl : this.resourceNamePlural
+
     let resources
 
     try {
@@ -67,18 +68,38 @@ class Base {
   }
 
   static async allWithPagination (pagination, filter, options = {}) {
-    let sortOrder = pagination.descending ? 'desc' : 'asc'
     let url = options.customUrl ? options.customUrl : this.resourceNamePlural
+    let sortOrder = pagination.descending ? 'desc' : 'asc'
 
-    return this.axios.get(url, {
-      params: {
-        page: pagination.page,
-        page_size: pagination.rowsPerPage,
-        sort_by: pagination.sortBy,
-        sort_order: sortOrder,
-        filter: filter
-      }
+    let rawResponse
+
+    try {
+      rawResponse = await this.axios.get(url, {
+        params: {
+          page: pagination.page,
+          page_size: pagination.rowsPerPage,
+          sort_by: pagination.sortBy,
+          sort_order: sortOrder,
+          filter: filter
+        }
+      })
+    } catch (error) {
+      throw new TotalResourceError(error.message, 'total_resource_error')
+    }
+
+    let meta = rawResponse.data.meta
+    let data = rawResponse.data[this.classNameCamelizedPlural]
+
+    let resources = data.map(resource => {
+      return new this(resource)
     })
+
+    let response = {
+      meta,
+      [this.classNameCamelizedPlural]: resources
+    }
+
+    return response
   }
 
   static async delete (id) {
