@@ -41,33 +41,25 @@ class Base {
   }
 
   static async all (queryParams, options = {}) {
+    let url = options.customUrl ? options.customUrl : this.resourceNamePlural
     let resources
-    try {
-      let uri
-      if (options.customUrl) {
-        uri = options.customUrl
-      } else {
-        uri = this.resourceNamePlural
-      }
 
+    try {
       let response = await this.axios.get(
-        `${uri}`,
+        url,
         { params: queryParams }
       )
-      /*
-      if (options.customUrl) {
-        return response.data
-      } else { */
-      let x = response.data[this.classNameCamelizedPlural]
-      if (Array.isArray(x)) {
+
+      let resourceJson = response.data[this.classNameCamelizedPlural]
+      
+      if (Array.isArray(resourceJson)) {
         resources = []
-        x.forEach(item => {
-          resources.push(new this(item))
+        resourceJson.forEach(resource => {
+          resources.push(new this(resource))
         })
       } else {
-        resources = x
+        resources = new this(resourceJson)
       }
-      /*} */
     } catch (error) {
       throw new TotalResourceError(error.message, 'total_resource_error')
     }
