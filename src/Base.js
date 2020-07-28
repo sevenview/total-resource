@@ -71,18 +71,23 @@ class Base {
     let url = options.customUrl ? options.customUrl : this.resourceNamePlural
     let sortOrder = pagination.descending ? 'desc' : 'asc'
 
+    let params = {
+      page: pagination.page,
+      page_size: pagination.rowsPerPage,
+      sort_by: pagination.sortBy,
+      sort_order: sortOrder,
+      filter: filter
+    }
+
+    // merge in any extra params supplied
+    if (options.params) {
+      params = { ...params, ...options.params }
+    }
+
     let rawResponse
 
     try {
-      rawResponse = await this.axios.get(url, {
-        params: {
-          page: pagination.page,
-          page_size: pagination.rowsPerPage,
-          sort_by: pagination.sortBy,
-          sort_order: sortOrder,
-          filter: filter
-        }
-      })
+      rawResponse = await this.axios.get(url, { params: params })
     } catch (error) {
       throw new TotalResourceError(error.message, 'total_resource_error')
     }
