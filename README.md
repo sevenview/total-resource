@@ -78,3 +78,7 @@ class Widget extends TotalResource.Base {
 
 export default Widget
 ```
+
+## Publish a new Package
+
+`npm publish`
